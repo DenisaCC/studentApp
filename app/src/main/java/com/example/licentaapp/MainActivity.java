@@ -23,11 +23,23 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ImageButton buttonDrawerToggle;
     NavigationView navigationView;
-
+    private ImageButton coursesBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        coursesBtn = findViewById(R.id.coursesBtn);
+
+        coursesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Creează un Intent pentru a naviga către ScheduleActivity
+                Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
+                // Pornirea activității ScheduleActivity
+                startActivity(intent);
+            }
+        });
 
         drawerLayout = findViewById(R.id.drawerLayout);
         buttonDrawerToggle = findViewById(R.id.buttonDrawerToggle);

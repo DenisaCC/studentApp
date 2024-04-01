@@ -3,5 +3,13 @@
     <string name="select">Alegeti facultatea</string>
 
     <string name="text">Luminoasă</string>
+
+    <string-array name="Week">
+        <item>Luni</item>
+        <item>Marți</item>
+        <item>Miercuri</item>
+        <item>Joi</item>
+        <item>Vineri</item>
+    </string-array>
 </resources>
 
