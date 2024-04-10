@@ -6,10 +6,16 @@
 
     <string-array name="Week">
         <item>Luni</item>
-        <item>Marți</item>
+        <item>Marti</item>
         <item>Miercuri</item>
         <item>Joi</item>
         <item>Vineri</item>
     </string-array>
+
+    <string-array name="week_parity_options">
+        <item>Săptămâna pară</item>
+        <item>Săptămâna impară</item>
+    </string-array>
+
 </resources>
 

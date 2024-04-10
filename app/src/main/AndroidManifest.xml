@@ -21,11 +21,14 @@
         tools:replace="android:appComponentFactory"
         tools:targetApi="31">
         <activity
-            android:name=".WeekActivity"
+            android:name=".OddWeekActivity"
             android:exported="false" />
         <activity
-            android:name=".ScheduleActivity"
+            android:name=".EvenWeekActivity"
             android:exported="false" />
+        <activity
+            android:name=".WeekSelectionDialog"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />

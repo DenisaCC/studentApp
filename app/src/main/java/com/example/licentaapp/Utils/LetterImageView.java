@@ -52,20 +52,22 @@ public class LetterImageView extends AppCompatImageView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (getDrawable() == null && mText != null) { // Modificare: Verificăm dacă textul este setat
+        if (getDrawable() == null && mText != null) { // Verificăm dacă textul este setat
             mTextPaint.setTextSize(canvas.getHeight() - getTextPadding() * 2);
             if (isOval()) {
-                canvas.drawCircle(canvas.getWidth() / 2f, canvas.getHeight() / 2f, Math.min(canvas.getWidth(), canvas.getHeight()) / 2f, mBackgroundPaint);
+                // Draw a rectangle instead of a circle
+                canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), mBackgroundPaint);
             } else {
                 canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), mBackgroundPaint);
             }
             Rect textBounds = new Rect();
-            mTextPaint.getTextBounds(String.valueOf(mText.charAt(0)), 0, 1, textBounds); // Modificare: Extragem prima literă din text
-            float textWidth = mTextPaint.measureText(String.valueOf(mText.charAt(0))); // Modificare: Măsurăm lățimea primei litere
+            mTextPaint.getTextBounds(String.valueOf(mText.charAt(0)), 0, 1, textBounds); // Extragem prima literă din text
+            float textWidth = mTextPaint.measureText(String.valueOf(mText.charAt(0))); // Măsurăm lățimea primei litere
             float textHeight = textBounds.height();
-            canvas.drawText(String.valueOf(mText.charAt(0)), canvas.getWidth() / 2f - textWidth / 2f, canvas.getHeight() / 2f + textHeight / 2f, mTextPaint); // Modificare: Afisăm prima literă
+            canvas.drawText(String.valueOf(mText.charAt(0)), canvas.getWidth() / 2f - textWidth / 2f, canvas.getHeight() / 2f + textHeight / 2f, mTextPaint); // Afisăm prima literă
         }
     }
+
 
     private float getTextPadding() {
         return 8 * getResources().getDisplayMetrics().density;
