@@ -1,0 +1,176 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".FacultyActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/scheduleToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#196A01">
+
+        <ImageButton
+            android:id="@+id/buttonDrawerToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_back_24"
+            android:background="@android:color/transparent"
+            android:padding="1dp"/>
+
+        <TextView
+            android:id="@+id/facultyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+                android:layout_width="350dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:text="Echipa de conducere"
+                android:textSize="27sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/deanLabel"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="Decan:"
+                android:textSize="20sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/deanValue"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="-30dp"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/deanEmailValue"
+        android:layout_width="350dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        android:drawableLeft="@drawable/baseline_small_email_24"
+        android:drawablePadding="5dp"/>
+
+            <TextView
+                android:id="@+id/vicedeanLabel"
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="Prodecan:"
+                android:textSize="20sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/vicedeanValue"
+                android:layout_width="270dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="130dp"
+                android:layout_marginTop="-30dp"
+                android:textSize="20sp"
+                android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/vicedeanEmailValue"
+        android:layout_width="350dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        android:drawableLeft="@drawable/baseline_small_email_24"
+        android:drawablePadding="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="15dp"
+        android:text="Departamente"
+        android:textSize="27sp"
+        android:textStyle="bold"/>
+
+
+        <ListView
+            android:id="@+id/listview_department"
+            android:layout_width="match_parent"
+            android:layout_height="133dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:text="Contact"
+                android:textSize="27sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/addressValue"
+                android:layout_width="350dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:drawableLeft="@drawable/baseline_location_pin_24"
+                android:drawablePadding="8dp"/>
+
+
+            <TextView
+                android:id="@+id/emailValue"
+                android:layout_width="350dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:drawableLeft="@drawable/baseline_email_24"
+                android:drawablePadding="8dp"/>
+
+
+            <TextView
+                android:id="@+id/telephoneValue"
+                android:layout_width="350dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textStyle="normal"
+                android:drawableLeft="@drawable/baseline_phone_24"
+                android:drawablePadding="8dp"/>
+
+</LinearLayout>
+</ScrollView>
