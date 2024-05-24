@@ -28,7 +28,7 @@
             android:id="@+id/facultyName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
+            android:textSize="27sp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
@@ -83,7 +83,7 @@
 
             <TextView
                 android:id="@+id/vicedeanLabel"
-                android:layout_width="90dp"
+                android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"

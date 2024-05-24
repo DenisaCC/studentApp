@@ -6,14 +6,18 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.licentaapp.Connection.ConnectionClass;
 
@@ -28,9 +32,11 @@ public class LoginActivity extends AppCompatActivity {
 
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> adapterItems;
-    private static Button button_sbm;
+    private static ImageButton button_sbm;
     Connection con;
     EditText username, password;
+    ToggleButton toggleButtonShowPassword;
+    boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         Button loginbtn = findViewById(R.id.loginbtn);
+        toggleButtonShowPassword = findViewById(R.id.toggleButtonShowPassword);
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +60,34 @@ public class LoginActivity extends AppCompatActivity {
         signupText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Deschideți o altă activitate pentru înregistrare
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        TextView profLoginText = findViewById(R.id.profLoginText);
+        profLoginText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Deschide ProfLoginActivity când TextView-ul este apăsat
+                Intent intent = new Intent(LoginActivity.this, ProfLoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        toggleButtonShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    toggleButtonShowPassword.setBackgroundResource(R.drawable.baseline_visibility_off_24);
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    isPasswordVisible = true;
+                } else {
+                    toggleButtonShowPassword.setBackgroundResource(R.drawable.baseline_eye_24);
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    isPasswordVisible = false;
+                }
+                password.setSelection(password.getText().length());
             }
         });
     }
@@ -87,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     String usernameStr = username.getText().toString().trim();
                     String passwordStr = password.getText().toString().trim();
-                    // Verifică dacă parola respectă condițiile: minim 8 caractere, o cifră și o literă mare
+
                     if (!isValidPassword(passwordStr)) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -97,6 +129,14 @@ public class LoginActivity extends AppCompatActivity {
                         });
                         return "Parola nu respectă cerințele";
                     }
+
+                    // Verifică dacă toggleButton este activat sau dezactivat și setează parola corespunzător
+                    if (isPasswordVisible) {
+                        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    } else {
+                        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    }
+
                     String sql = "SELECT * FROM Utilizator WHERE NumeUtilizator = '" + usernameStr + "' AND Parola = '" + passwordStr + "'";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
@@ -109,9 +149,9 @@ public class LoginActivity extends AppCompatActivity {
                         });
                         z = "Succes!";
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("USERNAME", usernameStr); // Trimite numele de utilizator către MainActivity
+                        intent.putExtra("USERNAME", usernameStr);
                         startActivity(intent);
-                        finish(); // Termină activitatea curentă (LoginActivity)
+                        finish();
                     } else {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -130,19 +170,17 @@ public class LoginActivity extends AppCompatActivity {
             return z;
         }
 
-        // Metoda pentru a verifica dacă parola respectă condițiile
         private boolean isValidPassword(String password) {
-            // Verifică dacă parola are cel puțin 8 caractere
             if (password.length() < 8) {
                 return false;
             }
-            // Verifică dacă parola conține cel puțin o cifră și o literă mare folosind expresii regulate
             String regex = "^(?=.*[0-9])(?=.*[A-Z]).{8,}$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(password);
             return matcher.matches();
         }
     }
+
     public Connection connectionClass(String user, String password, String db, String ip, String port) {
         StrictMode.ThreadPolicy a = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(a);

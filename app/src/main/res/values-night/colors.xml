@@ -10,6 +10,7 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#202020</color>
     <color name="colorAccent">#FFFFFF</color>
+    <color name="my_button_color">#4CAF50</color>
 
     <color name="textColor">#FFFFFF</color>
 </resources>

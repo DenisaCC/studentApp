@@ -14,31 +14,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="0dp"
         android:src="@drawable/logo" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/newAccount"
         android:layout_width="300dp"
         android:layout_height="80dp"
         android:text="Creează un cont nou"
         android:textSize="18dp"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="400dp"
         android:backgroundTint="#0B4208"
         app:cornerRadius = "40dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/login"
         android:layout_width="300dp"
         android:layout_height="80dp"
         android:text="Ai deja un cont? Autentifică-te"
         android:textColor="@color/white"
         android:textSize="18dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="570dp"
         android:backgroundTint="#0B4208"
         app:cornerRadius = "40dp" /> />
 

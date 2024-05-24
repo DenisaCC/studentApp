@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     ImageButton buttonDrawerToggle;
     NavigationView navigationView;
-    private ImageButton coursesBtn, facultyBtn, gradesBtn;
+    private ImageButton coursesBtn, facultyBtn, gradesBtn, campusBtn, taxesBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
         gradesBtn = findViewById(R.id.gradesBtn);
 
+        campusBtn = findViewById(R.id.campusBtn);
+
+        taxesBtn = findViewById(R.id.taxeBtn);
+
 
         drawerLayout = findViewById(R.id.drawerLayout);
         buttonDrawerToggle = findViewById(R.id.buttonDrawerToggle);
@@ -60,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String username = intent.getStringExtra("USERNAME");
-
-
 
         buttonDrawerToggle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +161,30 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("MainActivity", "Username: " + username);
 
+
+        campusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirecționează către pagina cu detalii despre facultate
+                Intent intent = new Intent(MainActivity.this, CampusActivity.class);
+                startActivity(intent);
+
+                intent.putExtra("USERNAME", username); // Trimiteți numele de utilizator către activitatea corespunzătoare
+                startActivity(intent);
+            }
+        });
+
+        taxesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirecționează către pagina cu detalii despre facultate
+                Intent intent = new Intent(MainActivity.this, TaxesActivity.class);
+                startActivity(intent);
+
+                intent.putExtra("USERNAME", username); // Trimiteți numele de utilizator către activitatea corespunzătoare
+                startActivity(intent);
+            }
+        });
     }
 
     private class GetNrMatricolTask extends AsyncTask<String, Void, Integer> {

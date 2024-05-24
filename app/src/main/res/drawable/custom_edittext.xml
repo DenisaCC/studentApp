@@ -2,9 +2,13 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
+    <!-- Spațiu suplimentar în stânga -->
+    <padding
+        android:left="20dp" /> <!-- Ajustează dimensiunea pentru spațiul dorit -->
+
     <stroke
         android:width="3dp"
         android:color="#39BA11"/>
     <corners
-        android:radius="20dp"/>
+        android:radius="30dp"/>
 </shape>

@@ -12,6 +12,8 @@
     <color name="colorAccent">#199119</color>
     <color name="transparent">#00000000</color>
     <color name="textColor">#FFFFFF</color>
+    <color name="my_button_color">#4CAF50</color>
+
 
     <string-array name="colors" translatable="false">
         <item>#99cc00</item>

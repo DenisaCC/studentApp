@@ -1,7 +1,10 @@
 package com.example.licentaapp;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,7 +19,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GradeActivity extends AppCompatActivity {
@@ -38,6 +44,18 @@ public class GradeActivity extends AppCompatActivity {
         gradeList = new ArrayList<>();
         gradeAdapter = new GradeAdapter(gradeList);
         recyclerViewGrade.setAdapter(gradeAdapter);
+
+        ImageButton backButton = findViewById(R.id.buttonDrawerToggle);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GradeActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("BACK_PRESSED", true);
+                startActivity(intent);
+            }
+        });
+
 
         // Inițializează GetGradesTask cu valoarea nrMatricol
         new GetGradesTask(nrMatricol).execute();
@@ -78,9 +96,20 @@ public class GradeActivity extends AppCompatActivity {
                     float nota = resultSet.getFloat("Nota");
                     String dataNota = resultSet.getString("DataNota");
 
+                    // Formatăm data în formatul "dd-MM-yyyy"
+                    try {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date date = dateFormat.parse(dataNota);
+                        SimpleDateFormat dateFormatOutput = new SimpleDateFormat("dd-MM-yyyy");
+                        dataNota = dateFormatOutput.format(date);
+                    } catch (ParseException e) {
+                        Log.e("GradeActivity", "Error parsing date: " + e.getMessage());
+                    }
+
                     Grade grade = new Grade(numeDisciplina, nota, numeProfesor, dataNota);
                     grades.add(grade);
                 }
+
 
             } catch (Exception e) {
                 Log.e("GradeActivity", "Error fetching grades: " + e.getMessage());

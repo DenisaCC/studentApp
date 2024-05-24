@@ -64,6 +64,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.google.android.material:material:1.9.0")
     implementation(files("C:\\Users\\Denisa\\AndroidStudioProjects\\licentaApp\\app\\libs\\jtds-1.3.1.jar"))
+    implementation("androidx.activity:activity:1.8.0")
     releaseImplementation("com.android.support:appcompat-v7:28.0.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

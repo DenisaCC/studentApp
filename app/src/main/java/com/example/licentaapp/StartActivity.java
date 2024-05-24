@@ -20,7 +20,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void OnClickButton1Listener() {
-        button_sbm1 = (Button) findViewById(R.id.button1);
+        button_sbm1 = (Button) findViewById(R.id.newAccount);
         button_sbm1.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -33,7 +33,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void OnClickButton2Listener() {
-        button_sbm2 = (Button) findViewById(R.id.button2);
+        button_sbm2 = (Button) findViewById(R.id.login);
         button_sbm2.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
