@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfChatActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:background="#196A01"
+        android:titleTextColor="@color/white">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_back_24"
+            android:background="@android:color/transparent"
+            android:padding="1dp" />
+
+        <TextView
+            android:id="@+id/textViewUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_centerInParent="true" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/sendMessageLayout"
+        android:layout_below="@id/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sendMessageLayout"
+        android:layout_alignParentBottom="true"
+        android:padding="15dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/messageInput"
+            android:hint="Tastati mesajul..."
+            android:background="@drawable/edit_style_box"
+            android:layout_alignParentLeft="true"
+            android:minHeight="50dp" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/sendMessageIcon"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:padding="15dp"
+            android:background="@color/transparent"
+            android:src="@drawable/baseline_send_24" />
+    </RelativeLayout>
+</RelativeLayout>

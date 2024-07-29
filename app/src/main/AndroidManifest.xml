@@ -5,11 +5,20 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <permission
+        android:name="${applicationId}.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,6 +29,94 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory"
         tools:targetApi="31">
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel_id" />
+
+        <activity
+            android:name=".NewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddNewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CaminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FacultyBuildingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CanteenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InsertGradeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadCoursesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RulesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadRulesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageStudentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageProfessorsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InsertProfessorsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InsertStudentsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfOddWeekActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfEvenWeekActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadProfProgramActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadTaxesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfChatMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SyncDatabaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatMainActivity"
+            android:exported="false" />
         <activity
             android:name=".ProfAccountDetailsActivity"
             android:exported="false" />
@@ -54,6 +151,9 @@
             android:name=".WeekSelectionDialog"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ProfWeekSelectionDialog"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
@@ -84,4 +184,10 @@
             android:theme="@style/AppTheme" />
     </application>
 
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/baseline_notification_important_24" />
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
 </manifest>

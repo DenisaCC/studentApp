@@ -119,6 +119,7 @@ public class ProfLoginActivity extends AppCompatActivity {
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
                     if (rs.next()) {
+                        final int professorId = rs.getInt("IDProfesor");
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -128,6 +129,8 @@ public class ProfLoginActivity extends AppCompatActivity {
                         z = "Succes!";
                         Intent intent = new Intent(ProfLoginActivity.this, ProfMainActivity.class);
                         intent.putExtra("USERNAME", usernameStr);
+                        intent.putExtra("PROFESSOR_ID", professorId);
+                        intent.putExtra("PASSWORD", passwordStr);
                         startActivity(intent);
                         finish();
                     } else {

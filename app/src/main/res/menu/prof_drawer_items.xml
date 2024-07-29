@@ -11,29 +11,13 @@
     <group
         android:id="@+id/group2">
         <item
-            android:icon="@drawable/baseline_info_outline_24"
-            android:id="@+id/navAnnounce"
-            android:title="Secretariat" />
-    </group>
-
-    <group
-        android:id="@+id/group3">
-        <item
-            android:icon="@drawable/baseline_feed_24"
-            android:id="@+id/navDocs"
-            android:title="Documente"/>
-    </group>
-
-    <group
-        android:id="@+id/group4">
-        <item
             android:icon="@drawable/baseline_rule_24"
             android:id="@+id/navRules"
             android:title="Regulament"/>
     </group>
 
     <group
-        android:id="@+id/group5">
+        android:id="@+id/group3">
         <item
             android:icon="@drawable/baseline_settings_24"
             android:id="@+id/navSettings"
@@ -41,7 +25,7 @@
     </group>
 
     <group
-        android:id="@+id/group6">
+        android:id="@+id/group4">
         <item
             android:icon="@drawable/baseline_logout_24"
             android:id="@+id/navLogout"

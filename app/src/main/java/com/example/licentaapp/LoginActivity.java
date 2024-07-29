@@ -1,5 +1,5 @@
 package com.example.licentaapp;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,6 +20,17 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.licentaapp.Connection.ConnectionClass;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -38,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
     ToggleButton toggleButtonShowPassword;
     boolean isPasswordVisible = false;
 
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +63,23 @@ public class LoginActivity extends AppCompatActivity {
         Button loginbtn = findViewById(R.id.loginbtn);
         toggleButtonShowPassword = findViewById(R.id.toggleButtonShowPassword);
 
+        // Inițializează Firebase Auth și Database
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CheckLoginTask().execute("");
+                String emailStr = username.getText().toString().trim(); // Presupunând că email-ul este introdus în câmpul de username
+                String passwordStr = password.getText().toString().trim();
+
+                if (checkIfAdmin(emailStr)) {
+                    // Utilizatorul este admin, autentifică-l cu Firebase Authentication
+                    firebaseSignIn(emailStr, passwordStr);
+                } else {
+                    // Utilizatorul nu este admin, continuă cu verificarea și autentificarea ca și înainte, probabil utilizând baza de date SSMS
+                    new CheckLoginTask().execute("");
+                }
             }
         });
 
@@ -95,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
     public class CheckLoginTask extends AsyncTask<String, String, String> {
         String z = null;
         Boolean isSuccess = false;
-
+        String passwordStr = "";
         @Override
         protected void onPreExecute() {
         }
@@ -104,9 +131,12 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
         }
 
+        public String getPassword() {
+            return passwordStr;
+        }
         @Override
         protected String doInBackground(String... strings) {
-            con = connectionClass(ConnectionClass.un, ConnectionClass.pass, ConnectionClass.db, ConnectionClass.ip, ConnectionClass.port);
+            con = ConnectionClass.connect(); // Utilizează metoda connect() din ConnectionClass
             if (con == null) {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -118,8 +148,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 try {
                     String usernameStr = username.getText().toString().trim();
-                    String passwordStr = password.getText().toString().trim();
-
+                    passwordStr = password.getText().toString().trim();
                     if (!isValidPassword(passwordStr)) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -150,8 +179,8 @@ public class LoginActivity extends AppCompatActivity {
                         z = "Succes!";
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("USERNAME", usernameStr);
+                        intent.putExtra("PASSWORD", passwordStr);
                         startActivity(intent);
-                        finish();
                     } else {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -181,20 +210,82 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public Connection connectionClass(String user, String password, String db, String ip, String port) {
-        StrictMode.ThreadPolicy a = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(a);
-        Connection connection = null;
-        String ConnectURL = null;
-        try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            ConnectURL = "jdbc:jtds:sqlserver://" + ip + ":" + port + ";databasename=" + db + ";user=" + user + ";" + "password=" + password + ";";
-            connection = DriverManager.getConnection(ConnectURL);
-        } catch (Exception e) {
-            Log.e("Error is", e.getMessage());
-        }
-        return connection;
+    private boolean checkIfAdmin(String email) {
+        return email.equals("studentappuniversitate@gmail.com");
     }
+
+    private void firebaseSignIn(String email, String password) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        // Autentificarea a fost reușită
+                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                        if (firebaseUser != null) {
+                            String username = firebaseUser.getDisplayName();
+                            saveAdminUserToDatabase(firebaseUser);
+
+                            Intent intent = new Intent(LoginActivity.this, MainAdminActivity.class);
+                            intent.putExtra("name", username);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Autentificarea a eșuat
+                        if (e instanceof FirebaseAuthInvalidUserException) {
+                            // Utilizatorul nu există
+                            Toast.makeText(LoginActivity.this, "Utilizatorul nu există", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Parola introdusă este incorectă sau a avut loc o altă eroare
+                            Toast.makeText(LoginActivity.this, "Nu aveti acces la contul de administrator", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void saveAdminUserToDatabase(FirebaseUser firebaseUser) {
+        String userId = firebaseUser.getUid();
+        String email = firebaseUser.getEmail();
+        String displayName = firebaseUser.getDisplayName();
+
+        // Structura obiectului User
+        User adminUser = new User(displayName, email, "admin");
+
+        DatabaseReference adminRef = FirebaseDatabase.getInstance().getReference("Administrators");
+        adminRef.child(userId).setValue(adminUser)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Firebase", "Admin user added to Realtime Database.");
+                        } else {
+                            Log.e("Firebase", "Failed to add admin user.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    // Structura obiectului User
+    public static class User {
+        public String name;
+        public String email;
+        public String role;
+
+        public User() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public User(String name, String email, String role) {
+            this.name = name;
+            this.email = email;
+            this.role = role;
+        }
+    }
+
 
     public void OnClickButtonListener() {
         button_sbm = findViewById(R.id.backbtn);

@@ -1,0 +1,50 @@
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/parentLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="4dp"
+    tools:context=".ProfEvenWeekActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <com.example.licentaapp.Utils.LetterImageView
+            android:id="@+id/ivSchedule"
+            android:layout_width="80dp"
+            android:layout_height="105dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvSchedule"
+            android:text="Days"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="50dp"
+            android:layout_toEndOf="@id/ivSchedule"
+            android:textStyle="bold"
+            android:textSize="24sp"/>
+
+            <include layout="@layout/prof_item_details"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvNoCourses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Nu există cursuri disponibile pentru această zi."
+        android:textSize="16sp"
+        android:visibility="gone" />
+</LinearLayout>

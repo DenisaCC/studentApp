@@ -1,190 +1,225 @@
 package com.example.licentaapp;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.os.StrictMode;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.licentaapp.Connection.ConnectionClass;
 import com.google.android.material.navigation.NavigationView;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
+    private ImageButton buttonDrawerToggle;
+    private ImageView userImage;
+    private String username, password;
+    private static final int REQUEST_STORAGE_PERMISSION = 100;
     private int nrMatricol;
-    DrawerLayout drawerLayout;
-    ImageButton buttonDrawerToggle;
-    NavigationView navigationView;
-    private ImageButton coursesBtn, facultyBtn, gradesBtn, campusBtn, taxesBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        coursesBtn = findViewById(R.id.coursesBtn);
-
-        facultyBtn = findViewById(R.id.facultyBtn);
-
-        gradesBtn = findViewById(R.id.gradesBtn);
-
-        campusBtn = findViewById(R.id.campusBtn);
-
-        taxesBtn = findViewById(R.id.taxeBtn);
-
-
-        drawerLayout = findViewById(R.id.drawerLayout);
         buttonDrawerToggle = findViewById(R.id.buttonDrawerToggle);
-        navigationView = findViewById(R.id.navigationView);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        userImage = findViewById(R.id.userImage);
 
         Intent intent = getIntent();
-        String username = intent.getStringExtra("USERNAME");
+        username = intent.getStringExtra("USERNAME");
+        password = intent.getStringExtra("PASSWORD");
 
-        buttonDrawerToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.open();
-            }
-        });
+        buttonDrawerToggle.setOnClickListener(view -> drawerLayout.openDrawer(GravityCompat.START));
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         View headerView = navigationView.getHeaderView(0);
         TextView textUsername = headerView.findViewById(R.id.textUsername);
-
-        // Setează numele de utilizator în TextView
         textUsername.setText(username);
 
-        ImageView useImage = headerView.findViewById(R.id.userImage);
-
-        useImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AccountDetailsActivity.class);
-                intent.putExtra("USERNAME", textUsername.getText().toString());
-                startActivity(intent);
-            }
+        textUsername.setOnClickListener(view -> {
+            Intent accountDetailsIntent = new Intent(MainActivity.this, AccountDetailsActivity.class);
+            accountDetailsIntent.putExtra("USERNAME", textUsername.getText().toString());
+            startActivity(accountDetailsIntent);
         });
 
-        textUsername.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Deschideți o altă activitate pentru a afișa detaliile contului și trimiteți numele de utilizator
-                Intent intent = new Intent(MainActivity.this, AccountDetailsActivity.class);
-                intent.putExtra("USERNAME", textUsername.getText().toString());
-                startActivity(intent);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.navNews) {
+                startActivityWithUsername(NewsActivity.class);
+            } else if (itemId == R.id.navSettings) {
+                startActivityWithUsername(SettingsActivity.class);
+            } else if (itemId == R.id.navRules) {
+                startActivityWithUsername(RulesActivity.class);
+            } else if (itemId == R.id.navLogout) {
+                Intent logoutIntent = new Intent(MainActivity.this, StartActivity.class);
+                startActivity(logoutIntent);
+                finish();
+                Toast.makeText(MainActivity.this, "V-ați deconectat de la contul dumneavoastră!", Toast.LENGTH_SHORT).show();
             }
+
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
         });
 
-        coursesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showWeekSelectionDialog(username);
-            }
+        // Verificare permisiuni pentru stocare
+        checkStoragePermission();
+
+        // Load number matricol
+        new GetNrMatricolTask().execute(username);
+
+        // Setare onClickListener pentru butoanele existente
+        ImageButton coursesBtn = findViewById(R.id.coursesBtn);
+        ImageButton facultyBtn = findViewById(R.id.facultyBtn);
+        ImageButton gradesBtn = findViewById(R.id.gradesBtn);
+        ImageButton campusBtn = findViewById(R.id.campusBtn);
+        ImageButton taxesBtn = findViewById(R.id.taxeBtn);
+        ImageButton chatBtn = findViewById(R.id.chatBtn);
+
+        coursesBtn.setOnClickListener(v -> showWeekSelectionDialog(username));
+
+        facultyBtn.setOnClickListener(v -> {
+            Intent intentFaculty = new Intent(MainActivity.this, FacultyActivity.class);
+            intentFaculty.putExtra("USERNAME", username);
+            startActivity(intentFaculty);
         });
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if(itemId == R.id.navNews){
-                    Toast.makeText(MainActivity.this, "News clicked", Toast.LENGTH_SHORT).show();
+        gradesBtn.setOnClickListener(v -> {
+            Intent intentGrades = new Intent(MainActivity.this, GradeActivity.class);
+            intentGrades.putExtra("NR_MATRICOL", nrMatricol);
+            startActivity(intentGrades);
+        });
+
+        campusBtn.setOnClickListener(v -> {
+            Intent intentCampus = new Intent(MainActivity.this, CampusActivity.class);
+            intentCampus.putExtra("USERNAME", username);
+            startActivity(intentCampus);
+        });
+
+        taxesBtn.setOnClickListener(v -> {
+            Intent intentTaxes = new Intent(MainActivity.this, TaxesActivity.class);
+            intentTaxes.putExtra("USERNAME", username);
+            startActivity(intentTaxes);
+        });
+
+        chatBtn.setOnClickListener(v -> {
+            Intent intentChat = new Intent(MainActivity.this, ChatMainActivity.class);
+            intentChat.putExtra("USERNAME", username);
+            // Asigură-te că ai acces la variabila password
+            intentChat.putExtra("PASSWORD", password); // Exemplu de placeholder pentru parolă
+            startActivity(intentChat);
+        });
+    }
+
+    private void checkStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+        } else {
+            // Permisiunea este deja acordată
+            new LoadProfileImageTask().execute(username);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permisiunea a fost acordată
+                new LoadProfileImageTask().execute(username);
+            } else {
+                // Permisiunea nu a fost acordată
+            }
+        }
+    }
+
+    private void startActivityWithUsername(Class<?> cls) {
+        Intent intent = new Intent(MainActivity.this, cls);
+        intent.putExtra("USERNAME", username);
+        startActivity(intent);
+    }
+
+    // Încărcare imagine de profil folosind Glide în MainActivity
+    private class LoadProfileImageTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String username = params[0];
+            String profileImageUrl = null;
+            Connection connection = null;
+
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                String url = "jdbc:jtds:sqlserver://" + ConnectionClass.ip + ":" + ConnectionClass.port + ";DatabaseName=" + ConnectionClass.db + ";user=" + ConnectionClass.un + ";password=" + ConnectionClass.pass + ";";
+                connection = DriverManager.getConnection(url);
+
+                Statement statement = connection.createStatement();
+                String query = "SELECT ImagineProfil FROM Utilizator WHERE NumeUtilizator = '" + username + "'";
+                ResultSet resultSet = statement.executeQuery(query);
+
+                if (resultSet.next()) {
+                    profileImageUrl = resultSet.getString("ImagineProfil");
                 }
-                if(itemId == R.id.navAnnounce){
-                    Toast.makeText(MainActivity.this, "Announce clicked", Toast.LENGTH_SHORT).show();
+
+                resultSet.close();
+                statement.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if(itemId == R.id.navSettings){
-                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                    intent.putExtra("USERNAME", textUsername.getText().toString());
-                    startActivity(intent);
-                }
-                if(itemId == R.id.navLogout){
-                    Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                    startActivity(intent);
-                    finish();
-                    Toast.makeText(MainActivity.this, "V-ați deconectat de la contul dumneavoastră!", Toast.LENGTH_SHORT).show();
-                }
-                drawerLayout.close();
-                return false;
             }
-        });
 
-        facultyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Redirecționează către pagina cu detalii despre facultate
-                Intent intent = new Intent(MainActivity.this, FacultyActivity.class);
-                startActivity(intent);
+            return profileImageUrl;
+        }
 
-                intent.putExtra("USERNAME", username); // Trimiteți numele de utilizator către activitatea corespunzătoare
-                startActivity(intent);
+        @Override
+        protected void onPostExecute(String profileImageUrl) {
+            if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                // Încarcă imaginea de profil în userImage folosind Glide
+                Glide.with(MainActivity.this)
+                        .load(profileImageUrl)
+                        .into(userImage);
+            } else {
+                // Încarcă o imagine de încărcare sau altceva în caz de eroare
+                Glide.with(MainActivity.this)
+                        .load(R.drawable.loading)
+                        .into(userImage);
             }
-        });
-
-
-        gradesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GradeActivity.class);
-                // Adaugă numărul matricolului în intent
-                intent.putExtra("NR_MATRICOL", nrMatricol); // presupunând că ai salvat numărul matricolului într-o variabilă numită nrMatricol
-                startActivity(intent);
-            }
-        });
-
-        GetNrMatricolTask task = new GetNrMatricolTask();
-        task.execute(username);
-
-        Log.d("MainActivity", "Username: " + username);
-
-
-        campusBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Redirecționează către pagina cu detalii despre facultate
-                Intent intent = new Intent(MainActivity.this, CampusActivity.class);
-                startActivity(intent);
-
-                intent.putExtra("USERNAME", username); // Trimiteți numele de utilizator către activitatea corespunzătoare
-                startActivity(intent);
-            }
-        });
-
-        taxesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Redirecționează către pagina cu detalii despre facultate
-                Intent intent = new Intent(MainActivity.this, TaxesActivity.class);
-                startActivity(intent);
-
-                intent.putExtra("USERNAME", username); // Trimiteți numele de utilizator către activitatea corespunzătoare
-                startActivity(intent);
-            }
-        });
+        }
     }
 
     private class GetNrMatricolTask extends AsyncTask<String, Void, Integer> {
@@ -192,35 +227,31 @@ public class MainActivity extends AppCompatActivity {
         protected Integer doInBackground(String... usernames) {
             String username = usernames[0];
             int nrMatricol = -1;
-
             Connection connection = null;
-            Statement statement = null;
-            ResultSet resultSet = null;
 
             try {
-                // Conectare la baza de date și executare interogare SQL pentru a obține numărul matricol asociat username-ului
                 Class.forName("net.sourceforge.jtds.jdbc.Driver");
                 String url = "jdbc:jtds:sqlserver://" + ConnectionClass.ip + ":" + ConnectionClass.port + ";DatabaseName=" + ConnectionClass.db + ";user=" + ConnectionClass.un + ";password=" + ConnectionClass.pass + ";";
                 connection = DriverManager.getConnection(url);
 
+                Statement statement = connection.createStatement();
                 String query = "SELECT NrMatricol FROM Utilizator WHERE NumeUtilizator = '" + username + "'";
-                statement = connection.createStatement();
-                resultSet = statement.executeQuery(query);
+                ResultSet resultSet = statement.executeQuery(query);
 
-                // Dacă interogarea returnează rezultate, obține numărul matricol asociat username-ului
                 if (resultSet.next()) {
                     nrMatricol = resultSet.getInt("NrMatricol");
                 }
 
+                resultSet.close();
+                statement.close();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                // Închidere resurse
                 try {
-                    if (resultSet != null) resultSet.close();
-                    if (statement != null) statement.close();
-                    if (connection != null) connection.close();
-                } catch (SQLException e) {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -235,16 +266,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void showWeekSelectionDialog(String username) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Selectați săptămâna");
 
-        // Inflate the layout for the dialog
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_week_selection, null);
         builder.setView(dialogView);
-
-        //dialogView.setBackgroundResource(R.drawable.white_background);
 
         Spinner spinnerWeek = dialogView.findViewById(R.id.weekSpinner);
 
@@ -253,29 +280,23 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerWeek.setAdapter(adapter);
 
-        // Set the positive button to handle selection
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String selectedWeek = spinnerWeek.getSelectedItem().toString();
-                // Handle the selected week here
                 Intent intent;
                 if (selectedWeek.equals("Săptămâna pară")) {
-                    // Start the activity for even week
                     intent = new Intent(MainActivity.this, EvenWeekActivity.class);
                 } else {
-                    // Start the activity for odd week
                     intent = new Intent(MainActivity.this, OddWeekActivity.class);
                 }
-                intent.putExtra("USERNAME", username); // Trimiteți numele de utilizator către activitatea corespunzătoare
+                intent.putExtra("USERNAME", username);
                 startActivity(intent);
             }
         });
 
-        // Set the negative button to cancel the dialog
         builder.setNegativeButton("Anulare", null);
 
-        // Display the dialog
         builder.create().show();
     }
 }

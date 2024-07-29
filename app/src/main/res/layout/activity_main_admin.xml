@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainAdminActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#196A01"
+        android:paddingEnd="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Administrare"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:layout_centerInParent="true"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+            <ImageButton
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_exit_to_app_24"
+                android:background="@android:color/transparent"
+                android:padding="1dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:columnCount="2"
+        android:rowCount="4"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:alignmentMode="alignMargins">
+
+        <Button
+            android:id="@+id/chatFunctionalityButton"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:text="Functionalitate chat"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/updateTaxesButton"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp"
+            android:text="Actualizare taxe"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/uploadProfProgram"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:text="Program profesori"
+            android:textAlignment="center"
+            android:layout_columnSpan="1"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/uploadSchedule"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:text="Încarcă orar"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_columnSpan="1"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/insertStudents"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Adaugă studenți"
+            android:textAlignment="center"
+            android:layout_columnSpan="1"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/insertProfessors"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Adaugă profesori"
+            android:layout_marginLeft="40dp"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/manageProfessors"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Gestionează conturile de profesori"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/manageStudents"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:text="Gestionează conturile de studenți"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/uploadCourses"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Încarcă discipline"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/uploadRules"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:text="Încarcă regulament"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/uploadMenu"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:text="Încarcă meniu cantine"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+
+        <Button
+            android:id="@+id/uploadNews"
+            android:layout_width="175dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:text="Încarcă anunțuri"
+            android:textAlignment="center"
+            android:background="@drawable/oval_button_background"/>
+    </GridLayout>
+</RelativeLayout>

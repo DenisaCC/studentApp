@@ -124,11 +124,12 @@ public class OddWeekActivity extends AppCompatActivity {
 
                     for (String day : daysOfWeek) {
                         Statement statement = connection.createStatement();
-                        String query = "SELECT D.Nume AS NumeDisciplina, P.Nume AS NumeProfesor, P.Prenume AS PrenumeProfesor, O.Sala AS Sala, O.OraInceput AS oraInceput, O.OraSfarsit AS oraSfarsit" +
+                        String query = "SELECT D.Nume AS NumeDisciplina, P.Nume AS NumeProfesor, P.Prenume AS PrenumeProfesor, O.Sala AS Sala, O.OraInceput AS oraInceput, O.OraSfarsit AS oraSfarsit, O.TipActivitate AS TipActivitate" +
                                 " FROM Orar O " +
                                 " JOIN Disciplina D ON O.IDDisciplina = D.IDDisciplina " +
                                 " JOIN Profesor P ON D.IDProfesor = P.IDProfesor " +
-                                " WHERE O.ZiSaptamana = '" + day + "' AND O.IDGrupa = " + userGroupID + " AND O.paritateSaptamana = 'Impară'";
+                                " WHERE O.ZiSaptamana = '" + day + "' AND O.IDGrupa = " + userGroupID + " AND O.paritateSaptamana = 'Impara'";
+
                         System.out.println("Interogare pentru ziua " + day + ": " + query); // Instrucțiune de imprimare pentru interogare
                         ResultSet resultSet = statement.executeQuery(query);
                         System.out.println("Query: " + query);
@@ -142,7 +143,8 @@ public class OddWeekActivity extends AppCompatActivity {
                             String oraInceput = resultSet.getString("OraInceput").substring(0, 5);
                             String oraSfarsit = resultSet.getString("OraSfarsit").substring(0, 5);
                             String intervalOrar = oraInceput + " - " + oraSfarsit;
-                            String scheduleEntry = discipline + " - " + numeProfesor + " " + prenumeProfesor + " - " + sala + " - " + intervalOrar;
+                            String tipActivitate = resultSet.getString("TipActivitate");
+                            String scheduleEntry = discipline + " - " + numeProfesor + " " + prenumeProfesor + " - " + sala + " - " + intervalOrar + " - " + tipActivitate;
                             scheduleForCurrentDay.add(scheduleEntry);
                         }
                         scheduleData.put(day, scheduleForCurrentDay);
@@ -255,17 +257,20 @@ public class OddWeekActivity extends AppCompatActivity {
                         TextView tvProfessor = eventDetailView.findViewById(R.id.tvProfessor);
                         TextView tvRoom = eventDetailView.findViewById(R.id.tvRoom);
                         TextView tvTime = eventDetailView.findViewById(R.id.tvTime);
+                        TextView tvActivity = eventDetailView.findViewById(R.id.tvActivityName);
 
                         String[] eventDetails = event.split(" - ");
                         String subjectName = eventDetails[0];
                         String professorName = eventDetails[1];
                         String room = eventDetails[2];
                         String timeInterval = eventDetails[3] + " - " + eventDetails[4];
+                        String activity = eventDetails[5];
 
                         tvSubjectName.setText(subjectName);
                         tvProfessor.setText("Profesor: " + professorName);
-                        tvRoom.setText("Sala: " + room);
+                        tvRoom.setText(room);
                         tvTime.setText("Ora: " + timeInterval);
+                        tvActivity.setText(activity);
 
                         scheduleDetailsLayout.addView(eventDetailView);
                     }

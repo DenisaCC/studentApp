@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CanteenActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/scheduleToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#196A01"
+        android:elevation="4dp">
+
+        <!-- ImageButton pentru navigare înapoi -->
+        <ImageButton
+            android:id="@+id/buttonDrawerToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_back_24"
+            android:background="@android:color/transparent"
+            android:padding="8dp"/>
+
+        <!-- Titlul activității -->
+        <TextView
+            android:id="@+id/Campus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="27sp"
+            android:text="Cantine"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Imaginea sub Toolbar -->
+    <ImageView
+        android:id="@+id/canteenImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/scheduleToolbar"
+        android:src="@drawable/canteen"
+        android:scaleType="centerCrop"
+ />
+
+    <!-- Layout pentru butoane -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/canteenImage"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/canteen1Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cantina 1"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/custom_edittext"
+            android:padding="16dp"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/canteen2Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cantina 2"
+            android:layout_marginTop="76dp"
+            android:background="@drawable/custom_edittext"
+            android:padding="16dp"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+</RelativeLayout>

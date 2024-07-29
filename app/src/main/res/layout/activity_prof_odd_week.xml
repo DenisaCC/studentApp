@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ScheduleActivity">
-
+    tools:context=".ProfOddWeekActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/scheduleToolbar"
@@ -24,16 +23,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Orar"
-            android:layout_marginLeft="150dp"
+            android:text="Program - săptămâna impară"
+            android:layout_marginLeft="30dp"
             android:textColor="@color/white"
             android:textSize="24dp"
             android:textStyle="bold" />
 
-
     </androidx.appcompat.widget.Toolbar>
-
-
 
     <ListView
         android:layout_width="match_parent"
@@ -48,7 +44,7 @@
         ></ListView>
 
     <LinearLayout
-        android:id="@+id/scheduleDetailsLayout"
+        android:id="@+id/programDetailsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

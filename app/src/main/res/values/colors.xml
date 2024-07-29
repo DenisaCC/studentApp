@@ -13,6 +13,8 @@
     <color name="transparent">#00000000</color>
     <color name="textColor">#FFFFFF</color>
     <color name="my_button_color">#4CAF50</color>
+    <color name="off_white">#FDFDFD</color>
+    <color name="light_gray">#C3C3C3</color>
 
 
     <string-array name="colors" translatable="false">

@@ -37,7 +37,7 @@ public class GradeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grade);
 
         int nrMatricol = getIntent().getIntExtra("NR_MATRICOL", 0); // 0 este valoarea implicită în cazul în care nu se găsește niciun număr matricol în intent
-        Log.d("GradeActivity", "Numărul matricolului: " + nrMatricol);
+        Log.d("GradeActivity", "Numărul matricol: " + nrMatricol);
         recyclerViewGrade = findViewById(R.id.recyclerViewGrade);
         recyclerViewGrade.setLayoutManager(new LinearLayoutManager(this));
 

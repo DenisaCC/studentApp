@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">StudentApp</string>
     <string name="select">Alegeti facultatea</string>
+    <string name="select_category">Selectați Categoria</string>
+    <string-array name="categories">
+        <item>Regulamente privind activitatea profesională a studentilor</item>
+        <item>Regulamente privind examenele de finalizare a studiilor</item>
+        <item>Regulamente privind organizarea si desfăsurarea admiterii</item>
+    </string-array>
+
+
+        <string name="channel_name">Nume canal</string>
+        <string name="channel_description">Descriere canal</string>
+
+    <string-array name="cantine_array">
+        <item>Cantina 1</item>
+        <item>Cantina 2</item>
+    </string-array>
+
 
     <string name="text">Luminoasă</string>
 

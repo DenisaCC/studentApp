@@ -256,19 +256,6 @@ public class RegisterActivity extends AppCompatActivity {
         return connection;
     }
 
-    public void OnClickButtonListener() {
-        backbtn = findViewById(R.id.backbtn);
-        backbtn.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(RegisterActivity.this, StartActivity.class);
-                        startActivity(intent);
-                    }
-                }
-        );
-    }
-
     public void onChangeProfilePhotoClick(View view) {
         // Creează un Intent pentru a deschide galeria de imagini
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

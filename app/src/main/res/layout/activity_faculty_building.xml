@@ -1,0 +1,56 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FacultyBuildingActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/scheduleToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#196A01">
+
+            <ImageButton
+                android:id="@+id/buttonDrawerToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_back_24"
+                android:background="@android:color/transparent"
+                android:padding="1dp"/>
+
+            <TextView
+                android:id="@+id/facultyBuildings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="27sp"
+                android:text="Corpurile Facultății"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="0dp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/canteenImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/scheduleToolbar"
+            android:src="@drawable/building"
+            android:scaleType="centerCrop"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCorpFacultate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:layout_marginTop="250dp"
+            android:layout_below="@+id/scheduleToolbar"/>
+    </RelativeLayout>
+</ScrollView>

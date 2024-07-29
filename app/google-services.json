@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "86978996382",
+    "firebase_url": "https://licentaapp-6b051-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "licentaapp-6b051",
+    "storage_bucket": "licentaapp-6b051.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86978996382:android:59da2570a668ec566cb38f",
+        "android_client_info": {
+          "package_name": "com.example.licentaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFPaZmt5dZY3ogrhI3tS9bEJhIGfESbH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

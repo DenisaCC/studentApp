@@ -1,6 +1,7 @@
 package com.example.licentaapp;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -132,6 +133,10 @@ public class FacultyActivity extends AppCompatActivity {
                         vicedeanStatement.close();
                     }
                 }
+                Log.d("AsyncTask", "Decan: " + facultyData[1]);
+                Log.d("AsyncTask", "Prodecan: " + facultyData[2]);
+                Log.d("AsyncTask", "Decan Email: " + facultyData[6]);
+                Log.d("AsyncTask", "Prodecan Email: " + facultyData[7]);
                 Log.d("FacultyActivity", "Faculty ID: " + facultyID);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -170,7 +175,7 @@ public class FacultyActivity extends AppCompatActivity {
                 case 2:
                     imageResourceId = R.drawable.fchimie;
                     break;
-                // Alte cazuri
+                // Adaugă alte cazuri pentru alte facultăți
             }
             imageView.setImageResource(imageResourceId);
 
@@ -192,36 +197,25 @@ public class FacultyActivity extends AppCompatActivity {
                 textViewTelephoneValue.setText(facultyData[5]);
                 textViewDeanEmailValue.setText(facultyData[6]);
                 textViewVicedeanEmailValue.setText(facultyData[7]);
+
+                Log.d("onPostExecute", "Faculty Name: " + facultyData[0]);
+                Log.d("onPostExecute", "Dean: " + facultyData[1]);
+                Log.d("onPostExecute", "Vice Dean: " + facultyData[2]);
+                Log.d("onPostExecute", "Address: " + facultyData[3]);
+                Log.d("onPostExecute", "Email: " + facultyData[4]);
+                Log.d("onPostExecute", "Telephone: " + facultyData[5]);
+                Log.d("onPostExecute", "Dean Email: " + facultyData[6]);
+                Log.d("onPostExecute", "Vice Dean Email: " + facultyData[7]);
             } else {
                 // Gestionează cazul în care nu se pot obține datele despre facultate
             }
 
+            // Setează click listener pentru câmpurile de email
             textViewEmailValue.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String emailAddress = textViewEmailValue.getText().toString();
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                    emailIntent.setData(Uri.parse("mailto:" + emailAddress));
-                    if (emailIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(emailIntent);
-                    } else {
-                        Log.e("FacultyActivity", "Nu s-a găsit o aplicație de email pentru a deschide.");
-                        Toast.makeText(FacultyActivity.this, "Nu s-a găsit o aplicație de email instalată.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
-            textViewTelephoneValue.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String phoneNumber = textViewTelephoneValue.getText().toString();
-                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                    callIntent.setData(Uri.parse("tel:" + phoneNumber));
-                    if (callIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(callIntent);
-                    } else {
-                        Log.e("FacultyActivity", "Nu s-a găsit o aplicație pentru a efectua un apel.");
-                    }
+                    openYahooMailApp(emailAddress);
                 }
             });
 
@@ -229,14 +223,7 @@ public class FacultyActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     String emailAddress = textViewDeanEmailValue.getText().toString();
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                    emailIntent.setData(Uri.parse("mailto:" + emailAddress));
-                    if (emailIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(emailIntent);
-                    } else {
-                        Log.e("FacultyActivity", "Nu s-a găsit o aplicație de email pentru a deschide.");
-                        Toast.makeText(FacultyActivity.this, "Nu s-a găsit o aplicație de email instalată.", Toast.LENGTH_SHORT).show();
-                    }
+                    openYahooMailApp(emailAddress);
                 }
             });
 
@@ -244,14 +231,7 @@ public class FacultyActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     String emailAddress = textViewVicedeanEmailValue.getText().toString();
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                    emailIntent.setData(Uri.parse("mailto:" + emailAddress));
-                    if (emailIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(emailIntent);
-                    } else {
-                        Log.e("FacultyActivity", "Nu s-a găsit o aplicație de email pentru a deschide.");
-                        Toast.makeText(FacultyActivity.this, "Nu s-a găsit o aplicație de email instalată.", Toast.LENGTH_SHORT).show();
-                    }
+                    openYahooMailApp(emailAddress);
                 }
             });
 
@@ -321,5 +301,26 @@ public class FacultyActivity extends AppCompatActivity {
             });
         }
 
+
+    }
+
+    private void openYahooMailApp(String emailAddress) {
+        PackageManager packageManager = getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage("com.yahoo.mobile.client.android.mail");
+
+        if (intent != null) {
+            intent.setAction(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:" + emailAddress));
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Log.e("FacultyActivity", "Nu s-a găsit o aplicație de email Yahoo Mail pentru a deschide.");
+                Toast.makeText(FacultyActivity.this, "Nu s-a găsit o aplicație de email Yahoo Mail instalată.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Log.e("FacultyActivity", "Nu s-a găsit o aplicație Yahoo Mail instalată.");
+            Toast.makeText(FacultyActivity.this, "Nu s-a găsit o aplicație Yahoo Mail instalată.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
